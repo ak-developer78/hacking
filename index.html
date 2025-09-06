@@ -1,0 +1,90 @@
+
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Ethical Hacking Simulator</title>
+     <style>
+         body {
+             background-color: black;
+             color: limegreen;
+             font-family: monospace;
+             padding: 20px;
+         }
+         #console {
+             height: 400px;
+             overflow-y: auto;
+             border: 1px solid limegreen;
+             padding: 10px;
+             background-color: #111;
+         }
+         .input-line {
+             display: flex;
+         }
+         input {
+             background: black;
+             border: none;
+             color: limegreen;
+             font-family: monospace;
+             width: 100%;
+             outline: none;
+         }
+         .blinking-cursor {
+             animation: blink 1s infinite;
+         }
+         @keyframes blink {
+             50% { opacity: 0; }
+         }
+     </style>
+ </head>
+ <body>
+     <h1>Ethical Hacking Simulator</h1>
+     <div id="console"></div>
+     <div class="input-line">
+         <span>&gt;_</span>
+         <input type="text" id="commandInput" placeholder="Enter command..." onkeydown="handleCommand(event)">
+     </div>
+ 
+     <script>
+         const consoleDiv = document.getElementById("console");
+         const commands = {
+             "scan": "Scanning network...\n[192.168.1.1] Found\n[192.168.1.2] Found\n[192.168.1.3] Found\nScan complete! 3 devices detected.",
+             "bruteforce": "Starting brute-force attack simulation...\nTrying passwords...\n[123456] Failed\n[password] Failed\n[qwerty] Failed\nBrute-force attempt detected! Simulation blocked.",
+             "ddos": "Simulating DDoS attack...\nSending packets...\n[███████▒▒▒] 70%\n[██████████] 100%\nAttack simulated. Target overwhelmed!",
+             "encrypt": "Encrypting files...\n[████▒▒▒▒▒▒] 40%\n[██████████] 100%\nFiles encrypted successfully!",
+             "decrypt": "Decrypting files...\n[████▒▒▒▒▒▒] 40%\n[██████████] 100%\nFiles decrypted successfully!",
+             "exit": "Exiting simulation..."
+         };
+ 
+         function handleCommand(event) {
+             if (event.key === "Enter") {
+                 let input = event.target.value.toLowerCase();
+                 event.target.value = "";
+                 logToConsole(`> ${input}`);
+                 
+                 if (commands[input]) {
+                     simulateTyping(commands[input]);
+                 } else {
+                     simulateTyping("Unknown command. Try 'scan', 'bruteforce', 'ddos', 'encrypt', 'decrypt', or 'exit'.");
+                 }
+             }
+         }
+ 
+         function logToConsole(text) {
+             consoleDiv.innerHTML += `<p>${text}</p>`;
+             consoleDiv.scrollTop = consoleDiv.scrollHeight;
+         }
+ 
+         function simulateTyping(text) {
+             let i = 0;
+             let interval = setInterval(() => {
+                 logToConsole(text.substring(0, i));
+                 i++;
+                 if (i > text.length) clearInterval(interval);
+             }, 50);
+         }
+     </script>
+ </body>
+ </html>
